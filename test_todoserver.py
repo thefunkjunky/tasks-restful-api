@@ -39,7 +39,7 @@ class TestTodoServer(unittest.TestCase):
     self.assertEqual(200, resp.status_code)
     task = json_body(resp)
     self.assertEqual(task_id, task["id"])
-    self.assertEqual("Get milk.", task["summary"])
-    self.assertEqual("One gallon organic whole milk.", task["description"])
+    self.assertEqual(new_task["summary"], task["summary"])
+    self.assertEqual(new_task["description"], task["description"])
 
 
