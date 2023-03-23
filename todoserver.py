@@ -1,4 +1,5 @@
 import json
+import random
 
 from flask import Flask, request
 
@@ -7,15 +8,29 @@ app = Flask(__name__)
 MEMORY = {}
 
 
+def gen_tasks_id():
+  task_id = random.getrandbits(64)
+  if task_id in MEMORY:
+    task_id = gen_tasks_id()
+  return task_id
+
+
 @app.route("/tasks/", methods=["GET"])
 def get_all_tasks():
-  return "[]", 200
+  tasks = [
+    {
+      "id": task_id,
+      "summary": task["summary"]
+    }
+    for task_id, task in MEMORY.items()
+  ]
+  return json.dumps(tasks), 200
 
 
 @app.route("/tasks/", methods=["POST"])
 def add_task():
   payload = request.get_json(force=True)
-  task_id = 1
+  task_id = gen_tasks_id()
   MEMORY[task_id] = {
     "summary": payload["summary"],
     "description": payload["description"]
