@@ -44,7 +44,3 @@ def get_task(task_id):
   task_info = MEMORY[task_id].copy()
   task_info["id"] = task_id
   return json.dumps(task_info), 200
-
-
-if __name__ == '__main__':
-  app.run()
